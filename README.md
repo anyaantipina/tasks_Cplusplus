@@ -1,3 +1,3 @@
 # tasks_Cplusplus
 
-use -lc++ flag
+use -lc++ flag for second task
