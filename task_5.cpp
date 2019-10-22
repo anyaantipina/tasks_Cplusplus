@@ -20,21 +20,21 @@ public:
     }
 };
 
-template<class T>
+template<class T, class TT>
 struct custom_allocator {
     typedef T value_type;
     custom_allocator() noexcept {}
-    template <class U> custom_allocator (const custom_allocator<U>&) noexcept {}
+    template <class U> custom_allocator (const custom_allocator<U,U>&) noexcept {}
     T* allocate (size_t size) {
-        return static_cast<T*>(A::operator new(size*sizeof(T)));
+        return static_cast<T*>(TT::operator new(size*sizeof(T)));
     }
     void deallocate (T* p, size_t size) {
-        A::operator delete(p, size);
+        TT::operator delete(p, size);
     }
 };
 
 int main() {
     //auto sp = std::make_shared<A>();
-    custom_allocator<A> allocator;
+    custom_allocator<A,A> allocator;
     auto sp = std::allocate_shared<A>(allocator);
 }
