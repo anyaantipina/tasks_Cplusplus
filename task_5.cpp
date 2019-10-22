@@ -8,20 +8,7 @@
 
 #include <iostream>
 class A {
-  public:
-    
-    template<class A>
-    struct custom_allocator {
-        typedef A value_type;
-        custom_allocator() noexcept {}
-        template <class U> custom_allocator (const custom_allocator<U>&) noexcept {}
-        A* allocate (size_t size) {
-            return static_cast<A*>( operator new(size*sizeof(A)));
-        }
-        void deallocate (A* p, size_t size) {
-            operator delete(p, size);
-        }
-    };
+public:
     
     static void * operator new(size_t size) {
         std::cout << "operator new!" << std::endl;
@@ -33,10 +20,21 @@ class A {
     }
 };
 
+template<class T>
+struct custom_allocator {
+    typedef T value_type;
+    custom_allocator() noexcept {}
+    template <class U> custom_allocator (const custom_allocator<U>&) noexcept {}
+    T* allocate (size_t size) {
+        return static_cast<T*>(A::operator new(size*sizeof(T)));
+    }
+    void deallocate (T* p, size_t size) {
+        A::operator delete(p, size);
+    }
+};
 
 int main() {
     //auto sp = std::make_shared<A>();
-    A::custom_allocator<A> allocator;
+    custom_allocator<A> allocator;
     auto sp = std::allocate_shared<A>(allocator);
 }
-
