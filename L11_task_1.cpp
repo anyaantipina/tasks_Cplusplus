@@ -51,6 +51,7 @@ public:
 
     int main(int argc, const char * argv[]) {
         Any a(5);
+        a.get<int>();
         a.get<std::string>(); // error
         return 0;
     }
