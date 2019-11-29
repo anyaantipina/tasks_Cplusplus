@@ -31,21 +31,26 @@ public:
     template <typename T>
     Any (const T& v) : ObjPtr(new ObjHolder<T>(v)) {}
     template<typename U>
-    U get() const {
-        if(typeid(U) != ObjPtr->type_info()) {
-            throw std::bad_typeid();
+        U get() const {
+            U res;
+            try {
+                res = this->getHelp<U>();
+            }
+            catch (std::bad_typeid &t) {std::cout << "error in get()" << std::endl;}
+            return res;
         }
-        return static_cast<ObjHolder<U>* >(ObjPtr.get())->value;
-    }
-};
+        template<typename U>
+        U getHelp() const {
+            if(typeid(U) != ObjPtr->type_info()) {
+                throw std::bad_typeid();
+            }
+            return static_cast<ObjHolder<U>* >(ObjPtr.get())->value;
+        }
+    };
 
 
-int main(int argc, const char * argv[]) {
-    Any a(5);
-    a.get<int>(); // 5
-    try {
+    int main(int argc, const char * argv[]) {
+        Any a(5);
         a.get<std::string>(); // error
+        return 0;
     }
-    catch (std::bad_typeid &t) {std::cout << "error in get()" << std::endl;}
-    return 0;
-}
