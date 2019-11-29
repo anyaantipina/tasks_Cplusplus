@@ -26,19 +26,16 @@ public:
 
 
 class Any {
-    BaseObj * ObjPtr;
+    std::shared_ptr<BaseObj> ObjPtr;
 public:
     template <typename T>
-    Any (const T& v) {
-        auto newPtr(new ObjHolder<T>(v));
-        ObjPtr = newPtr;
-    }
+    Any (const T& v) : ObjPtr(new ObjHolder<T>(v)) {}
     template<typename U>
     U get() const {
         if(typeid(U) != ObjPtr->type_info()) {
             throw std::bad_typeid();
         }
-        return static_cast<ObjHolder<U>* >(ObjPtr)->value;
+        return static_cast<ObjHolder<U>* >(ObjPtr.get())->value;
     }
 };
 
