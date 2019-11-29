@@ -7,7 +7,6 @@
 //
 
 #include <iostream>
-#include <tuple>
 
 template <class ...>
 struct are_same_base {};
