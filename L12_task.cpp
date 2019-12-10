@@ -15,7 +15,7 @@
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
 
-class TRange : std::enable_shared_from_this<TRange>{
+class TRange {
 private:
     int64_t N;
     int64_t M;
