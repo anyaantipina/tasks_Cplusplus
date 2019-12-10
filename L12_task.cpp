@@ -1,6 +1,6 @@
 //
 //  main.cpp
-//  prak_L11_t3
+//  prak_L12_t
 //
 //  Created by Анна on 28/11/2019.
 //  Copyright © 2019 Анна. All rights reserved.
